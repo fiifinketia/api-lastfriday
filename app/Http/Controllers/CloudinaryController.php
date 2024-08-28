@@ -10,10 +10,10 @@ class CloudinaryController extends Controller
     public function show($imageName)
     {
         try {
-            $imageUrl = Cloudinary::image($imageName)->toUrl();
-            return response()->json(['url' => $imageUrl]);
+            $image = Cloudinary::admin()->asset($imageName);
+            return $image;
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Image not found or Cloudinary error'], 500);
+            return response()->json(['error' => $e->getMessage()], $e->getCode() ?: 404);
         }
     }
 }
